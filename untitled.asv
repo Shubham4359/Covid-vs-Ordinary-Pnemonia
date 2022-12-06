@@ -1,0 +1,24 @@
+close all;
+clc;
+
+folderinput='Data\train\COVID19';
+folderinput_1='Data\train\PNEUMONIA';
+folderinput_2='Data\train\NORMAL';
+A=imageDatastore(folderinput);
+limit = length(A.Files);
+for i=1:limit
+    I = imread(A.Files{i});
+    ss = size(I); 
+    type = size(ss);
+    type = type(1,2) ;
+    if(type==3)
+        I = rgb2gray(I);
+    end
+    I = imresize(I ,[800,900]);
+    I_final = edge_detection(I); 
+    new_Img=imfuse(I,I_final);
+    path = strcat('pnn\',num2str(i),'.jpeg');
+    imwrite(new_Img,path)
+    path1 = strcat('pnn1\',num2str(i),'.jpeg');
+    imwrite(I_final,path1)
+end
